@@ -12,5 +12,6 @@ export class MasterService {
 
   getValue() {
     return this.valueService.getValue();
+
   }
 }
