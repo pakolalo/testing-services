@@ -74,6 +74,7 @@ export class ProductService {
   };
 
   create(dto: CreateProductDto) {
+   //dto.title = 'khuio3hduioe'
     return this.http.post<Product>(`${this.apiUrl}/products`, dto);
   };
 
