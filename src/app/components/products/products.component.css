@@ -1,6 +1,15 @@
 .my-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: auto;
-  gap: 15px;
+    grid-template-columns:repeat(4, 1fr);
+    grid-template-rows: auto;
+    gap: 15px;
+}
+
+@media (max-width: 500px) {
+  .my-grid {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 }
