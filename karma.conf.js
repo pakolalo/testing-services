@@ -43,7 +43,7 @@ module.exports = function (config) {
     },
     reporters: ['mocha'],
     browsers: ['Chrome'],
-    customLauchers: {
+    customLaunchers: {
       ChromeHeadlessCI: {
         base: 'ChromeHeadless',
         flag: ['--no-sandbox']
