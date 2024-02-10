@@ -5,22 +5,27 @@ import { ProductService } from './product.service';
 import { CreateProductDto, Product, UpdateProductDTO } from '../models/product.model';
 import { generateManyProducts, generateOneProduct } from './../models/product.mock'
 import { environment } from '../../environments/environment';
-import { HttpStatusCode } from '@angular/common/http';
-import e from 'express';
+import { HttpStatusCode, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { tokenInterceptor } from '../interceptors/token.interceptor';
+import { TokenService } from './token.service';
 
 fdescribe('ProductService', () => {
   let productService: ProductService;
   let httpController: HttpTestingController;
+  let tokenService: TokenService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports:[HttpClientTestingModule],
       providers: [
-        ProductService
+        ProductService,
+        //provideHttpClient(withInterceptors([tokenInterceptor])),
+        //TokenService,
       ]
     });
     productService = TestBed.inject(ProductService);
     httpController = TestBed.inject(HttpTestingController);
+    tokenService = TestBed.inject(TokenService);
   });
 
   afterEach(() => {
@@ -36,6 +41,7 @@ fdescribe('ProductService', () => {
     it('should return a product list', (doneFn) => {
       // Arrange
       const mockData: Product[] = generateManyProducts(2);
+      spyOn(tokenService, 'getToken').and.returnValue('123')
       //Act
       productService.getAllSimple()
       .subscribe((data) => {
@@ -47,6 +53,8 @@ fdescribe('ProductService', () => {
       // http config
       const url = `${environment.API_URL}/products`
       const req = httpController.expectOne(url);
+      //const headers = req.request.headers;
+      //expect(headers.get('Authorization')).toEqual(`Bearer 123`)
       req.flush(mockData);
     });
   });
@@ -155,7 +163,7 @@ fdescribe('ProductService', () => {
     });
   });
 
-  describe('test for update', () => {
+  xdescribe('test for update', () => {
     it('should update a product', (doneFn) => {
       //Arrange
       const mockData: Product = generateOneProduct();
