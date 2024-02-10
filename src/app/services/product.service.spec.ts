@@ -9,7 +9,7 @@ import { HttpStatusCode, provideHttpClient, withInterceptors } from '@angular/co
 import { tokenInterceptor } from '../interceptors/token.interceptor';
 import { TokenService } from './token.service';
 
-fdescribe('ProductService', () => {
+describe('ProductService', () => {
   let productService: ProductService;
   let httpController: HttpTestingController;
   let tokenService: TokenService;
@@ -163,7 +163,7 @@ fdescribe('ProductService', () => {
     });
   });
 
-  xdescribe('test for update', () => {
+  describe('test for update', () => {
     it('should update a product', (doneFn) => {
       //Arrange
       const mockData: Product = generateOneProduct();
