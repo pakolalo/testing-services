@@ -79,7 +79,7 @@ export class ProductService {
   };
 
   update(id: string, dto: UpdateProductDTO) {
-    return this.http.put<Product>(`${this.apiUrl}/${id}`, dto);
+    return this.http.put<Product>(`${this.apiUrl}/products/${id}`, dto);
   };
 
   delete(id: string) {
