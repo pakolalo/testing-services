@@ -5,6 +5,8 @@ import { ProductService } from './product.service';
 import { CreateProductDto, Product, UpdateProductDTO } from '../models/product.model';
 import { generateManyProducts, generateOneProduct } from './../models/product.mock'
 import { environment } from '../../environments/environment';
+import { HttpStatusCode } from '@angular/common/http';
+import e from 'express';
 
 fdescribe('ProductService', () => {
   let productService: ProductService;
@@ -194,6 +196,101 @@ fdescribe('ProductService', () => {
       const req = httpController.expectOne(url);
       expect(req.request.method).toEqual('DELETE');
       req.flush(mockData);
+    });
+  });
+
+  describe('test for getOne', () => {
+    it('should return a product', (doneFn) => {
+      //Arrange
+      const mockData: Product = generateOneProduct();
+      const dto: UpdateProductDTO = {
+        title: 'new Product',
+      }
+      const productId = '1';
+       //Act
+       productService.getOne(productId)
+       .subscribe((data) => {
+        //Assert
+        expect(data).toEqual(mockData);
+        doneFn()
+       });
+       // http config
+      const url = `${environment.API_URL}/products/${productId}`;
+      const req = httpController.expectOne(url);
+      expect(req.request.method).toEqual('GET');
+      req.flush(mockData);
+    });
+
+    it('should return the right message when the status code is 409', (doneFn) => {
+      //Arrange
+      const productId = '1';
+      const msgError = '409 message';
+      const mockError = {
+        status: HttpStatusCode.Conflict,
+        statusText: msgError
+      }
+       //Act
+       productService.getOne(productId)
+       .subscribe({
+        error:(error) => {
+          //Assert
+          expect(error).toEqual('Something is failing with the server')
+          doneFn();
+        }
+       });
+       // http config
+      const url = `${environment.API_URL}/products/${productId}`;
+      const req = httpController.expectOne(url);
+      expect(req.request.method).toEqual('GET');
+      req.flush(msgError, mockError);
+    });
+
+    it('should return the right message when the status code is 404', (doneFn) => {
+      //Arrange
+      const productId = '1';
+      const msgError = '404 message';
+      const mockError = {
+        status: HttpStatusCode.NotFound,
+        statusText: msgError
+      }
+       //Act
+       productService.getOne(productId)
+       .subscribe({
+        error:(error) => {
+          //Assert
+          expect(error).toEqual('The product does not exist')
+          doneFn();
+        }
+       });
+       // http config
+      const url = `${environment.API_URL}/products/${productId}`;
+      const req = httpController.expectOne(url);
+      expect(req.request.method).toEqual('GET');
+      req.flush(msgError, mockError);
+    });
+
+    it('should return the right message when the status code is 401', (doneFn) => {
+      //Arrange
+      const productId = '1';
+      const msgError = '404 message';
+      const mockError = {
+        status: HttpStatusCode.Unauthorized,
+        statusText: msgError
+      }
+       //Act
+       productService.getOne(productId)
+       .subscribe({
+        error:(error) => {
+          //Assert
+          expect(error).toEqual('You are not allowed')
+          doneFn();
+        }
+       });
+       // http config
+      const url = `${environment.API_URL}/products/${productId}`;
+      const req = httpController.expectOne(url);
+      expect(req.request.method).toEqual('GET');
+      req.flush(msgError, mockError);
     });
   });
 });
