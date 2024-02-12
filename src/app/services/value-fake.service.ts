@@ -1,14 +1,24 @@
+import { of } from "rxjs";
+
 export class FakeValueService {
 
   constructor() { }
 
+  private value = 'my value';
+
   getValue() {
-    return 'fake value';
+    return this.value;
   }
 
-  setValue(value: string) { }
+  setValue(value: string) {
+    this.value = value;
+   }
 
   getPromiseValue() {
-    return Promise.resolve('fake promise value');
+    return Promise.resolve('promise value');
+  }
+
+  getObservableValue() {
+    return of('observable value');
   }
 }
