@@ -1,3 +1,3 @@
 # TestingServices
 
-This project is for testing the services and components in Angular 17.
+This project is to test Angular 17 components and services.
