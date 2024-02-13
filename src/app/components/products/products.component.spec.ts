@@ -33,4 +33,19 @@ fdescribe('ProductsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('tests for getAllProducts', () => {
+
+    it('should return product list from service', () => {
+      //Arrange
+      const productsMock = generateManyProducts(10);
+      productService.getAll.and.returnValue(of(productsMock));
+      const prevCount = component.products.length;
+      //Act
+      component.getAllProducts();
+      fixture.detectChanges();
+      //Assert
+      expect(component.products.length).toEqual(productsMock.length + prevCount);
+    })
+  })
 });
