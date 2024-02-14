@@ -6,6 +6,7 @@ import { ProductComponent } from '../product/product.component';
 import { ProductService } from '../../services/product.service';
 import { generateManyProducts } from '../../models/product.mock';
 import { ValueService } from '../../services/value.service';
+import { By } from '@angular/platform-browser';
 
 fdescribe('ProductsComponent', () => {
   let component: ProductsComponent;
@@ -94,5 +95,21 @@ fdescribe('ProductsComponent', () => {
       expect(component.rta).toEqual(mockMesg);
       expect(valueService.getPromiseValue).toHaveBeenCalled();
     });
+
+    it('should show "my mock string" in <p> when btn was clicked', fakeAsync(() => {
+      //Arrange
+      const mockMesg = 'my mock string';
+      valueService.getPromiseValue.and.returnValue(Promise.resolve(mockMesg));
+      const btnDe = fixture.debugElement.query(By.css('.btn-promise'));
+      //Act
+      btnDe.triggerEventHandler('click', null);
+      tick();
+      fixture.detectChanges();
+      const rtaDe = fixture.debugElement.query(By.css('p.rta'));
+      //Assert
+      expect(component.rta).toEqual(mockMesg);
+      expect(valueService.getPromiseValue).toHaveBeenCalled();
+      expect(rtaDe.nativeElement.textContent).toEqual(mockMesg);
+    }));
   });
 });
