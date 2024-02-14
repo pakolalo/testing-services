@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.model';
 import { ProductComponent } from '../product/product.component';
+import { ValueService } from '../../services/value.service';
 
 @Component({
   selector: 'app-products',
@@ -17,9 +18,11 @@ export class ProductsComponent implements OnInit {
   limit = 10;
   offset = 0;
   status: 'loading' | 'success' | 'error' | 'init' = 'init';
+  rta = '';
 
   constructor(
     private productService: ProductService,
+    private valueService: ValueService,
   ) {}
 
   ngOnInit(): void {
@@ -42,5 +45,10 @@ export class ProductsComponent implements OnInit {
         }, 3000)
       }
     })
+  }
+
+  async callPromise() {
+    const rta = await this.valueService.getPromiseValue();
+    this.rta = rta;
   }
 }
